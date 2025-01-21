@@ -1,0 +1,87 @@
+CREATE TABLE "User" (
+	id  SERIAL PRIMARY KEY,
+	userName VARCHAR(100),
+	email VARCHAR(100) UNIQUE,
+	password VARCHAR(100),
+	profilepic VARCHAR(2083),
+	createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
+ALTER TABLE "User"
+ADD CONSTRAINT unique_email UNIQUE (email)
+
+CREATE TABLE Posts (
+    id SERIAL PRIMARY KEY,
+    description TEXT,
+    postimage VARCHAR(2083),
+    postedBy INTEGER REFERENCES "User"(id) ON DELETE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE Likes (
+    id SERIAL PRIMARY KEY,
+	postId INTEGER REFERENCES Posts(id) ON DELETE CASCADE,
+    likedBy INTEGER REFERENCES "User"(id) ON DELETE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT unique_like UNIQUE(likedBy, postId)
+);
+
+CREATE TABLE Comments (
+    id SERIAL PRIMARY KEY,
+	postId INTEGER REFERENCES Posts(id) ON DELETE CASCADE,
+    commentText TEXT,
+    addedBy INTEGER REFERENCES "User"(id) ON DELETE CASCADE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE(addedBy, postId)
+);
+
+Select * FROM "User"
+
+
+INSERT INTO "User" (
+userName , email , password , profilePic
+)VALUES 
+(
+'Ahmed', 'a@gmail.com', '123456', 'http://dummypic'
+),
+(
+'akasha', 'abc@gmail.com', '123456', 'http://dummypics'
+),
+(
+'Laraib', 'abcd@gmail.com', '123456', 'http://dummypicss'
+),
+(
+'Khan', 'aabb@gmail.com', '123456', 'http://dummypic.com'
+)
+
+
+
+
+Insert INTO Posts (
+description  , postimage, postedBy
+)VALUES
+(
+'THIS IS THE DESCRIPTION' , 'Https://postimg' , '12'
+)
+
+Insert INTO Likes (
+postId , likedBy
+)VALUES
+(
+'5' , '12'
+)
+
+
+Insert INTO Comments (
+postId , addedBy , commentText
+)VALUES
+(
+'5' , '12' , 'My First Comment'
+)
+
+UPDATE Comments 
+SET commenttext = 'updated comment'
+Where id = '2'
+
+
+DELETE FROM "User"
+Where id = '11'

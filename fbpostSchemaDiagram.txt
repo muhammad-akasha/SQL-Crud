@@ -1,0 +1,28 @@
+user [icon: user, color: gray] {
+  id SERIAL PRIMARY KEY
+  email VARCHAR(255) UNIQUE
+  username VARCHAR(100)
+  profile VARCHAR(2083) 
+  password VARCHAR(100) 
+  userposts posts[]
+}
+
+posts [icon: facebook, color: gray] {
+  id SERIAL PRIMARY KEY
+  description TEXT
+  postimage VARCHAR(2083)
+  postedBy INTEGER
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  likes userId[]
+  comments comment[]
+}
+comment [icon :comment , color : gray]{
+   id SERIAL PRIMARY KEY
+   commentText TEXT
+   commentBy userId
+   postId postId
+}
+user.userposts >= posts.id
+posts.likes  >= user.id
+posts.comments  >= comment.postId
+comment.commentBy > user.id
